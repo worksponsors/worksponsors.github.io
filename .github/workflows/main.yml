@@ -6,17 +6,8 @@ jobs:
   update-doc:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2
+      - uses: octokit/request-action@v2.x
+        id: get_latest_release
         with:
-          persist-credentials: false
-      - name: Web Request Action
-        id: goUkLink
-        uses: Satak/webrequest-action@v1.2.3
-        with:
-          url: https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
-          method: GET
-      - name: use output
-        run: |
-          $output = '${{ steps.goUkLink.outputs.data }}' | ConvertFrom-Json
-          Write-Host "Url from output $($output.details.attachments.url)"
+          route: GET https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
+      - run: "echo latest release: ${{ steps.get_latest_release.outputs.data }}"
