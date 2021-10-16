@@ -11,11 +11,12 @@ jobs:
         with:
           persist-credentials: false
       - name: Web Request Action
+        id: goUkLink
         uses: Satak/webrequest-action@v1.2.3
         with:
           url: https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
           method: GET
       - name: use output
         run: |
-          $output = '${{ steps.webhook.outputs.data }}' | ConvertFrom-Json
+          $output = '${{ steps.goUkLink.data }}' | ConvertFrom-Json
           Write-Host "Url from output $($output.details.attachments.url)"
