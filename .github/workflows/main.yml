@@ -10,11 +10,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-      - name: set output
-        run: |
-         echo ::set-output name=getUpdatedUrl ::curl https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
+      - name: Web Request Action
+        uses: Satak/webrequest-action@v1.2.3
+        with:
+          url: https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
+          method: GET
       - name: use output
         run: |
-         echo $getUpdatedUrl | jq '.details.attachments.url'
-        env:
-          getUpdatedUrl: ${{ steps.set.outputs.getUpdatedUrl}}
+          $output = '${{ steps.webhook.outputs.output }}' | ConvertFrom-Json
+          Write-Host "Url from output $($output.data.details.attachments)"
