@@ -1,7 +1,7 @@
 name: Update latest CSV 
 on: 
-  schedule:
-    - cron: 10 15 * * 0-6
+  push:
+    branches: [ main ]
 jobs:
   update-doc:
     runs-on: ubuntu-latest
