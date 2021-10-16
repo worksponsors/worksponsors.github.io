@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
 jobs:
-  update-doc:
+  get-latesturl:
     runs-on: ubuntu-latest
     steps:
       - uses: octokit/request-action@v2.x
@@ -12,4 +12,21 @@ jobs:
           route: GET https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest release: ${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}"
+      - run: |
+          export DOWNLOAD_URL=${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}
+          echo "::set-env name=DOWNLOAD_URL::$DOWNLOAD_URL"
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Download Feed
+        run: |-
+          wget $DOWNLOAD_URL -O dowloaded/latest.csv
+      - name: Commit and push changes
+        run: |-
+          git diff
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          git diff --quiet || (git add -A && git commit -m "Updated with latest")
+          git push
+  
