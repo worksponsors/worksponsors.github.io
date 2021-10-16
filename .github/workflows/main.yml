@@ -12,4 +12,4 @@ jobs:
           route: GET https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest release: ${{ steps.get_latest_release.outputs.data }}"
+      - run: "echo latest release: ${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}"
