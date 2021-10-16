@@ -17,5 +17,5 @@ jobs:
           method: GET
       - name: use output
         run: |
-          $output = '${{ steps.webhook.outputs.output }}' | ConvertFrom-Json
-          Write-Host "Url from output $($output.data.details.attachments)"
+          $output = '${{ steps.webhook.outputs.data }}' | ConvertFrom-Json
+          Write-Host "Url from output $($output.details.attachments.url)"
