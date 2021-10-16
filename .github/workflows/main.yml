@@ -14,7 +14,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           export DOWNLOAD_URL=${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}
-          echo "::set-env name=DOWNLOAD_URL::$DOWNLOAD_URL"
+          echo DOWNLOAD_URL >> $DOWNLOAD_URL
       - name: Check out repo
         uses: actions/checkout@v2
         with:
