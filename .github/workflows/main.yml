@@ -18,5 +18,5 @@ jobs:
           method: GET
       - name: use output
         run: |
-          $output = '${{ steps.goUkLink.outputs }}' | ConvertFrom-Json
-          Write-Host "Url from output $($output.data.details.attachments.url)"
+          $output = '${{ steps.goUkLink.outputs.data }}' | ConvertFrom-Json
+          Write-Host "Url from output $($output.details.attachments.url)"
