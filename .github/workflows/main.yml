@@ -13,14 +13,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo "${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}" >> $DOWNLOAD_URL
+          echo "${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}"
       - name: Check out repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Download Feed
         run: |-
-          wget $DOWNLOAD_URL -O dowloaded/latest.csv
+          wget ${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }} -O dowloaded/latest.csv
       - name: Commit and push changes
         run: |-
           git diff
