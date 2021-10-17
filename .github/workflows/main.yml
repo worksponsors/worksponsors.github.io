@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
       - name: Download Feed
         run: |-
-          wget ${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }} -O latest.csv
+          wget ${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }} -O https://github.com/worksponsors/worksponsors.github.io/tree/main/assets/data/latest.csv
       - name: Commit and push changes
         run: |-
           git diff
