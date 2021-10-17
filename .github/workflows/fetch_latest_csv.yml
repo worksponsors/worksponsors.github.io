@@ -15,6 +15,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }}"
+      - name: Get current datetime
+        id: datetime
+        run: |-
+          echo "::set-output name=datetime::$(date +'%Y-%m-%dT%H%:M%:S')"
+          echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Check out current repository
         uses: actions/checkout@v2
         with:
@@ -22,19 +27,15 @@ jobs:
       - name: Download latest CSV from the link
         run: |-
           wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
+          curl "Fetched timestamp ${{ steps.datetime.outputs.datetime }}" > assets/data/${{ steps.datetime.outputs.date }}.txt
       - name: Commit all changes
         id: commit
         run: |-
           git config user.name "Strange Supreme"
           git config user.email "actions@github.com"
           git add --all
-          if [-z "$(git status --porcelain)"]; then
-             echo "::set-output name=push::false"
-          else
-             git commit -m "Updated lastest CSV" -a
-             echo "::set-output name=push::true"
+          git commit -m "Fetch & Updated CSV" 
       - name: Push changes
-        if: steps.commit.outputs.push == 'true'
         uses: ad-m/github-push-action@master
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
