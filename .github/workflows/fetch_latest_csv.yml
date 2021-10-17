@@ -14,11 +14,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo "${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }}"
+          echo ":set-output name=csvfileurl::${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }}"
+          echo ":set-output name=csvupdatedtimestamp::${{ fromJson(steps.get_details.outputs.data).details.change_history[0].public_timestamp }}"
       - name: Get current datetime
         id: datetime
         run: |-
-          echo "::set-output name=datetime::$(date +'%Y-%m-%dT%H%:M%:S')"
+          echo "::set-output name=datetime::$(date +'%Y.%m.%d-%H.%M.%S')"
           echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Check out current repository
         uses: actions/checkout@v2
@@ -26,8 +27,8 @@ jobs:
           fetch-depth: 0
       - name: Download latest CSV from the link
         run: |-
-          wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
-          echo "Fetched timestamp ${{ steps.datetime.outputs.datetime }}" > assets/data/${{ steps.datetime.outputs.date }}.txt
+          wget ${{ steps.get_details.outputs.csvfileurl }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
+          echo "${{ steps.datetime.outputs.datetime }} Updated ${{ steps.get_details.outputs.csvupdatedtimestamp }} filetimestamp" > assets/data/${{ steps.datetime.outputs.date }}.txt
       - name: Commit all changes
         id: commit
         run: |-
