@@ -29,6 +29,7 @@ jobs:
       - name: Commit all changes
         id: commit
         run: |-
+          git pull
           git config user.name "Strange Supreme"
           git config user.email "actions@github.com"
           git add --all
