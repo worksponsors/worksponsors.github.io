@@ -14,7 +14,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo "${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}"
+          echo "${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }}"
       - name: Check out current repository
         uses: actions/checkout@v2
         with:
