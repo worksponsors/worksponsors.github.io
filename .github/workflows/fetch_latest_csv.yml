@@ -33,7 +33,6 @@ jobs:
           else
              git commit -m "Updated lastest CSV" -a
              echo "::set-output name=push::true"
-          fi
       - name: Push changes
         if: steps.commit.outputs.push == 'true'
         uses: ad-m/github-push-action@master
