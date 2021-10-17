@@ -23,12 +23,20 @@ jobs:
         run: |-
           wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
       - name: Commit all changes
+        id: commit
         run: |-
           git config user.name "Strange Supreme"
           git config user.email "actions@github.com"
           git add --all
-          git commit -m "Updated with latest"
+          if [-z "$(git status --porcelain)"]; then
+             echo "::set-output name=push::false"
+          else
+             git commit -m "Updated lastest CSV" -a
+             echo "::set-output name=push::true"
+          fi
+        shell: bash
       - name: Push changes
+        if: steps.commit.outputs.push == 'true'
         uses: ad-m/github-push-action@master
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
