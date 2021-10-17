@@ -1,4 +1,4 @@
-name: Update latest CSV 
+name: Fetch updated list of skilled sponsor companies
 on: 
   push:
     branches: [ main ]
@@ -6,25 +6,26 @@ jobs:
   get-latesturl:
     runs-on: ubuntu-latest
     steps:
+      - name: Fetching details from GOV Api..
+      - id: get_details
       - uses: octokit/request-action@v2.x
-        id: get_latest_release
         with:
-          route: GET https://www.gov.uk/api/content/government/publications/register-of-licensed-sponsors-workers
+          route: GET ${{ secrets.GOV_UK_SPONSOR_LINK }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }}"
-      - name: Check out repo
+      - name: Check out current repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Download Feed
+      - name: Download latest CSV from the link
         run: |-
-          wget ${{ fromJson(steps.get_latest_release.outputs.data).details.attachments[0].url }} -O assets/data/latest.csv
-      - name: Commit and push changes
+          wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
+      - name: Commit all changes
         run: |-
-          git config user.name "Automated"
-          git config user.email "actions@users.noreply.github.com"
+          git config user.name "Strange Supreme"
+          git config user.email "actions@github.com"
           git add --all
           git commit -m "Updated with latest"
       - name: Push changes
