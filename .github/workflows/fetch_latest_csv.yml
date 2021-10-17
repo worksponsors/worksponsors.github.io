@@ -6,7 +6,6 @@ jobs:
   get-latesturl:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetching details from GOV Api..
       - uses: octokit/request-action@v2.x
       - id: get_details
         with:
