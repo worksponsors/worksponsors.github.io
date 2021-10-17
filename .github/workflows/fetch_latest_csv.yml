@@ -27,7 +27,7 @@ jobs:
       - name: Download latest CSV from the link
         run: |-
           wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
-          curl "Fetched timestamp ${{ steps.datetime.outputs.datetime }}" > assets/data/${{ steps.datetime.outputs.date }}.txt
+          echo "Fetched timestamp ${{ steps.datetime.outputs.datetime }}" > assets/data/${{ steps.datetime.outputs.date }}.txt
       - name: Commit all changes
         id: commit
         run: |-
