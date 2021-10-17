@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetching details from GOV Api..
-      - id: get_details
       - uses: octokit/request-action@v2.x
+      - id: get_details
         with:
           route: GET ${{ secrets.GOV_UK_SPONSOR_LINK }}
         env:
