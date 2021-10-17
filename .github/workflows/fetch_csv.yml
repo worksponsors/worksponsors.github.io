@@ -1,7 +1,6 @@
 name: Fetch updated list of skilled sponsor companies
-on:
-  schedule:
-    - cron:  '5 * * * *'
+on: push
+
 jobs:
   get-latesturl:
     runs-on: ubuntu-latest
