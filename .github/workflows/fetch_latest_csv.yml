@@ -14,8 +14,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo ":set-output name=csvfileurl::${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }}"
-          echo ":set-output name=csvupdatedtimestamp::${{ fromJson(steps.get_details.outputs.data).details.change_history[0].public_timestamp }}"
+          echo "::set-output name=csvfileurl::${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }}"
+          echo "::set-output name=csvupdatedtimestamp::${{ fromJson(steps.get_details.outputs.data).details.change_history[0].public_timestamp }}"
       - name: Get current datetime
         id: datetime
         run: |-
