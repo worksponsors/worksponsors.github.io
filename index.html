@@ -42,7 +42,10 @@ cookieconsent.run({"notice_banner_type":"interstitial","consent_type":"express",
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-F7V6WPQBCX');
+  gtag('config', 'G-F7V6WPQBCX', {
+    cookie_domain: '.github.io',
+    cookie_flags: 'SameSite=None;Secure',
+  });
 </script>
 <!-- Appzi: Capture Insightful Feedback -->
 <script async src="https://w.appzi.io/w.js?token=JX5cw"></script>
